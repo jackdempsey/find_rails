@@ -1,0 +1,7 @@
+A simple thor task to help point out areas of code that still need attention in converting from Rails to Merb. 
+
+This is primarily based on topfunky's deprecated task found here:
+
+http://topfunky.net/svn/plugins/deprecated/tasks/deprecated.rake
+
+Enjoy!
