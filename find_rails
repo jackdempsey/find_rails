@@ -1,4 +1,8 @@
+#!/usr/bin/env ruby
+
 require 'find'
+require 'rubygems'
+require 'thor'
 
 # Take a directory, and a list of patterns to match, and a list of
 # filenames to avoid
@@ -31,7 +35,7 @@ end
 return results
 end
 
-class Rails2Merb < Thor
+class FindRails < Thor
   desc 'conversion [PATH_TO_APP]', "Checks your code and prints out which methods will need to change"
   def conversion(path_to_app='.')
     conversions = {
@@ -62,3 +66,5 @@ class Rails2Merb < Thor
     end
   end
 end
+
+FindRails.new.conversion(ARGV.to_s)
