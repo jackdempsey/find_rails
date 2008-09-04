@@ -36,8 +36,11 @@ class Rails2Merb < Thor
   desc 'conversion APP_DIR', "Checks your code and prints out which methods will need to change"
   def conversion(app_dir)
     conversions = {
-      'before_filter'   => 'Use before_filter',
-      'after_filter'   => 'Use after_filter'
+      'before_filter'   => 'Use before',
+      'after_filter'   => 'Use after',
+      'render :partial' => 'Use partial',
+      'redirect_to' => 'Use redirect',
+      'url_for' => 'Use url'
     }
 
     results = recursive_search("#{File.expand_path('app', app_dir)}",conversions.keys)
