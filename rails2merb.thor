@@ -2,7 +2,7 @@ require 'find'
 
 # Take a directory, and a list of patterns to match, and a list of
 # filenames to avoid
-def recursive_search(dir,patterns, excludes=[/\.git/, /\.svn/, /,v$/, /\.cvs$/, /\.tmp$/, /^RCS$/, /^SCCS$/])
+def recursive_search(dir,patterns, excludes=[/\.git/, /\.svn/, /,v$/, /\.cvs$/, /\.tmp$/, /^RCS$/, /^SCCS$/, /~$/])
 results = Hash.new{|h,k| h[k] = ''}
 
 Find.find(dir) do |path|
