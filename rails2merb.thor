@@ -32,9 +32,8 @@ return results
 end
 
 class Rails2Merb < Thor
-
-  desc 'conversion APP_DIR', "Checks your code and prints out which methods will need to change"
-  def conversion(app_dir)
+  desc 'conversion [PATH_TO_APP]', "Checks your code and prints out which methods will need to change"
+  def conversion(path_to_app='.')
     conversions = {
       'before_filter'   => 'Use before',
       'after_filter'   => 'Use after',
@@ -43,7 +42,12 @@ class Rails2Merb < Thor
       'url_for' => 'Use url'
     }
 
-    results = recursive_search("#{File.expand_path('app', app_dir)}",conversions.keys)
+    dir_to_search = File.expand_path('app', path_to_app)
+    if !File.exists?(dir_to_search)
+      puts "#{dir_to_search} doesn't exist. Make sure you're in your merb app top level, or pass in a path to the app"
+      return
+    end
+    results = recursive_search(dir_to_search,conversions.keys)
 
     conversions.each do |key, warning|
       puts '--> ' + key
