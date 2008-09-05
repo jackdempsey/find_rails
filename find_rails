@@ -23,7 +23,12 @@ Find.find(dir) do |path|
       ln = 1
       while (line = f.gets)
         patterns.each do |p|
-          if line.include?(p)
+          matcher = if p.is_a? Regexp
+            lambda {|line| p.match(line)}
+          else
+            lambda {|line| line.include?(p)}
+          end
+          if matcher.call(line)
             results[p] += "#{path}:#{ln}:#{line}"
           end
         end
@@ -43,7 +48,8 @@ class FindRails < Thor
       'after_filter'   => 'Use after',
       'render :partial' => 'Use partial',
       'redirect_to' => 'Use redirect',
-      'url_for' => 'Use url'
+      'url_for' => 'Use url',
+      /redirect.*?return/ => "You want to 'return redirect(...)' not 'redirect and return'"
     }
 
     dir_to_search = File.expand_path('app', path_to_app)
@@ -54,7 +60,7 @@ class FindRails < Thor
     results = recursive_search(dir_to_search,conversions.keys)
 
     conversions.each do |key, warning|
-      puts '--> ' + key
+      puts '--> ' + key.to_s.gsub('?-mix:','') # clean up what the regexp.to_s looks like
       unless results[key] =~ /^$/
         puts "  !! " + warning + " !!"
         puts '  ' + '.' * (warning.length + 6)
