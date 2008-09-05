@@ -23,12 +23,7 @@ Find.find(dir) do |path|
       ln = 1
       while (line = f.gets)
         patterns.each do |p|
-          matcher = if p.is_a? Regexp
-            lambda {|line| p.match(line)}
-          else
-            lambda {|line| line.include?(p)}
-          end
-          if matcher.call(line)
+          if !line.scan(p).empty?
             results[p] += "#{path}:#{ln}:#{line}"
           end
         end
